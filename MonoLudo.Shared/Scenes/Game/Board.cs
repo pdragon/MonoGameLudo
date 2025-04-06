@@ -108,10 +108,10 @@ public class Board
 
     public static Tile GetTileById(short id)
     {
-        var amountNetralTile = Tiles.Where(t => t.Value!.Color == Config.ColorIndex.Neutral).Count();
+        var amountNeutralTile = Tiles.Where(t => t.Value!.Color == Config.ColorIndex.Neutral).Count();
         if ( Tiles.Count + 1 > id)
         {
-            if (amountNetralTile + 1 > id)
+            if (amountNeutralTile + 1 > id)
             {
                 return Tiles.Select(a => a.Value).Where(w => w!.Id == id).FirstOrDefault();
             }
@@ -226,29 +226,11 @@ public class Board
     public void DebugTiles()
     {
 #if DEBUG
-
-        //SpriteBatch.Begin();
-        
-        //SpriteBatch.End();
         foreach (var tile in Tiles)
         {
-            //Main.Text(tile.Value.Id.ToString(), new Vector2(tile.Value.Position.X + .X/2, tile.Value.Position.Y + tile.Value.Position.Y /2), Color.BlueViolet);
-            Main.Text(tile.Value.Id.ToString(), tile.Value.Position + new Vector2(Config.CellSize.X/2, 0), Color.BlueViolet);
-            //Vector2 fromVector = Main.ToScreen(new Vector2((int)tile.Value!.Position.X - Config.CellSize / 2, (int)tile.Value.Position.Y - Config.CellSize / 2));
-            //DrawRectangleBorder(new Rectangle((int)fromVector.X, (int)fromVector.Y, Config.CellSize, Config.CellSize), new Color(128, 128, 1, 255), 2);
-            //DrawRectangleBorder(new Rectangle ( (int)tile.Value!.Position.X - Config.CellSize / 2, (int)tile.Value.Position.Y - Config.CellSize / 2, Config.CellSize, Config.CellSize), new Color(128, 128, 1, 255), 10);
+            Main.Text(tile.Value.Id.ToString(), tile.Value.Position + new Vector2(Config.CellSize.X/2, 0), Color.DarkBlue);
             DrawRectangleBorder(new Rectangle((int)tile.Value!.Position.X, (int)tile.Value.Position.Y, Config.CellSize.X, Config.CellSize.Y), new Color(128, 128, 1, 255), 1);
         }
-
-        //foreach (var PlayerTiles in HomeTiles)
-        //{
-        //    if (PlayerTiles != null)
-        //        foreach (var tile in PlayerTiles)
-        //        {
-        //            Graphics.DrawRectangle((int)tile.Value!.Position.X - Config.CellSize / 2, (int)tile.Value.Position.Y - Config.CellSize / 2, Config.CellSize, Config.CellSize, new Color(52, 52, 52, 52));
-        //            Graphics.DrawText(tile.Key.ToString(), (int)tile.Value.Position.X, (int)tile.Value.Position.Y, 32, Color.Black);
-        //        }
-        //}
 #endif
     }
 

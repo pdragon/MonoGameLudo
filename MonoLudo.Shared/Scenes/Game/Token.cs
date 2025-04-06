@@ -79,31 +79,48 @@ public class Token
 
     private void DrawAtPos(Vector2 position, float radiusCorrection = 0)
     {
-        // Отрисовка
+        float scale = Main.ScaleMatrix.M11; // Масштаб по оси X (предполагается равный Y)
+        float scaledRadius = Config.TokenRadius * scale;
+
+        // Внешний круг (чёрная обводка)
         Main.SpriteBatch.Draw(
             Config.CircleTexture[0],
             position,
-            new Rectangle(0, 0, (int)(Config.TokenRadius + 2 + radiusCorrection), (int)(Config.TokenRadius + 2 + radiusCorrection)),
-            //new Vector2(centerX, centerY) - new Vector2(radius),
-            Color.Black
+            null, // Не используйте Rectangle, если нужен масштаб!
+            Color.Black,
+            0f,
+            Vector2.Zero,
+            (scaledRadius + 2 + radiusCorrection) / Config.CircleTexture[0].Width, // Масштаб
+            SpriteEffects.None,
+            0f
         );
 
+        // Внутренний круг (цвет игрока)
         Main.SpriteBatch.Draw(
             Config.CircleTexture[0],
             position,
-            new Rectangle(0, 0, (int)(Config.TokenRadius  + radiusCorrection), (int)(Config.TokenRadius  + radiusCorrection)),
-            //new Vector2(centerX, centerY) - new Vector2(radius),
-            Config.PlayerColors[(short)PlayerColor]
+            null,
+            Config.PlayerColors[(short)PlayerColor],
+            0f,
+            Vector2.Zero,
+            (scaledRadius + radiusCorrection) / Config.CircleTexture[0].Width,
+            SpriteEffects.None,
+            0f
         );
 
-        //Graphics.DrawCircleV(
-        //          position,
-        //          Config.TokenRadius + 2 + radiusCorrection,
-        //          Color.Black
-        //      );
-        //Graphics.DrawCircleV(
+        //// Отрисовка
+        //Main.SpriteBatch.Draw(
+        //    Config.CircleTexture[0],
         //    position,
-        //    Config.TokenRadius + radiusCorrection,
+        //    new Rectangle(0, 0, (int)(Config.TokenRadius + 2 + radiusCorrection), (int)(Config.TokenRadius + 2 + radiusCorrection)),
+        //    Color.Black
+        //);
+
+        //Main.SpriteBatch.Draw(
+        //    Config.CircleTexture[0],
+        //    position,
+        //    new Rectangle(0, 0, (int)(Config.TokenRadius  + radiusCorrection), (int)(Config.TokenRadius  + radiusCorrection)),
+        //    //new Vector2(centerX, centerY) - new Vector2(radius),
         //    Config.PlayerColors[(short)PlayerColor]
         //);
     }

@@ -5,6 +5,7 @@ using System.Collections;
 //using MonoLudo.Shared.Actions;
 using MonoLudo.Shared.Scenes.Game;
 using System.Linq;
+using Microsoft.Xna.Framework;
 
 namespace MonoLudo.Shared.Scenes
 {
@@ -22,15 +23,10 @@ namespace MonoLudo.Shared.Scenes
             GameManager.SetNextPlayer();
         }
 
-        public bool Update()
-        {
-            bool gameOver = Game.Game.Players!.All(s => s == null || s.CurrentState == Player.State.AlreadyVictory);
-            //InputHandler.ProcessInput(Game);
-
-            Board.Draw();
-            Game.Game.Dice.Draw();
-
-            //Timer.Update();
+        public void Draw() {
+            //Board.Draw();
+            //Board.DebugTiles();
+            Scenes.Game.Game.Dice.Draw();
             foreach (var player in Game.Game.Players!)
             {
                 if (player != null)
@@ -38,9 +34,22 @@ namespace MonoLudo.Shared.Scenes
                     player.DrawTokens();
                 }
             }
-            if (!gameOver && !Queue.Update()) // Если в очереди что-то есть то выполняем только очередь
+        }
+
+
+        public bool Update()
+        {
+            bool gameOver = Game.Game.Players!.All(s => s == null || s.CurrentState == Player.State.AlreadyVictory);
+            //InputHandler.ProcessInput(Game);
+
+            //Board.Draw();
+            //Game.Game.Dice.Draw();
+
+            //Timer.Update();
+            
+            if (!gameOver && !Queue.Update()) // Р•СЃР»Рё РІ РѕС‡РµСЂРµРґРё С‡С‚Рѕ-С‚Рѕ РµСЃС‚СЊ С‚Рѕ РІС‹РїРѕР»РЅСЏРµРј С‚РѕР»СЊРєРѕ РѕС‡РµСЂРµРґСЊ
             {
-                GameManager.Draw();
+                GameManager.Update();
             }
             if (gameOver)
             {
@@ -49,14 +58,6 @@ namespace MonoLudo.Shared.Scenes
             }
             return false;
         }
-
-        //public void Complete()
-        //{
-        //    if (gameOver)
-        //    {
-        //        Console.WriteLine("game is over");
-        //    }
-        //}
     }
 }
 

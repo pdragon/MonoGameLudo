@@ -10,7 +10,6 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
   </PropertyGroup>
-	<Import Project="..\MonoLudo.Shared\MonoLudo.Shared.projitems" Label="Shared" />
   <ItemGroup>
     <None Remove="Content\obj\DesktopGL\net8.0\Content\background.png" />
     <None Remove="Content\obj\DesktopGL\net8.0\Content\settings.xml" />
@@ -39,4 +38,5 @@
     <Message Text="Restoring dotnet tools" Importance="High" />
     <Exec Command="dotnet tool restore" />
   </Target>
+  <Import Project="..\MonoLudo.Shared\MonoLudo.Shared.projitems" Label="Shared" />
 </Project>

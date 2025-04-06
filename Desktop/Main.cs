@@ -11,11 +11,10 @@ namespace Desktop
 {
     public class Main : Game
     {
-        private GraphicsDeviceManager _graphics;
+        public GraphicsDeviceManager Graphics;
         public SpriteBatch SpriteBatch { get; private set; }
         private float _targetAspectRatio = 1.0f; // 1:1 (квадрат)
         public static GameTime GameTime = new GameTime();
-        //public static Texture2D PixelTexture { get; private set; }
         private MonoLudo.Shared.Main SharedMain;
         private Point _lastWindowPosition;
         private bool FirstFrameWithWindow = true;
@@ -25,20 +24,20 @@ namespace Desktop
 
         public Main()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            Graphics = new GraphicsDeviceManager(this);
             Window.AllowUserResizing = true;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            SharedMain = new MonoLudo.Shared.Main(Window, GraphicsDevice, _graphics, Content);
+            
             //Window.ClientSizeChanged += OnWindowResized;
             Window.ClientSizeChanged += (s, e) =>
             {
                 // Минимальный размер окна
                 if (Window.ClientBounds.Width < 800 || Window.ClientBounds.Height < 600)
                 {
-                    _graphics.PreferredBackBufferWidth = 800;
-                    _graphics.PreferredBackBufferHeight = 600;
-                    _graphics.ApplyChanges();
+                    Graphics.PreferredBackBufferWidth = 800;
+                    Graphics.PreferredBackBufferHeight = 600;
+                    Graphics.ApplyChanges();
                     SharedMain.UpdateScaleMatrix();
                 }
             };
@@ -46,23 +45,34 @@ namespace Desktop
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             base.Initialize();
             new Input(Window);
+            try
+            {
+                SharedMain = new MonoLudo.Shared.Main(Window, GraphicsDevice, Graphics, Content);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Ошибка инициализации: {ex}");
+                Exit(); // Завершить игру при ошибке
+            }
+            SharedMain.LoadContent(GraphicsDevice, Content);
         }
 
         protected override void LoadContent()
         {
-            //SharedMain.UpdateScaleMatrix();
+            //SharedMain.LoadContent(GraphicsDevice, Content);
+            //SharedMain = new MonoLudo.Shared.Main();
             SpriteBatch = new SpriteBatch(GraphicsDevice);
-            //sharedMain.Lo
-            // TODO: use this.Content to load your game content here
-            SharedMain.LoadContent(GraphicsDevice, Content);
+            MonoLudo.Shared.Main.SetSpriteBatch(SpriteBatch);
+
+
             _font = Content.Load<SpriteFont>("Shafarik-Regular"); // Имя файла .spritefont без расширения
         }
 
         protected override void Update(GameTime gameTime)
         {
+            
             if (Window.Position != _lastWindowPosition)
             {
                 _matrixNeedsUpdate = true;
@@ -71,8 +81,6 @@ namespace Desktop
             Config.DeltaTime = gameTime.ElapsedGameTime.TotalSeconds;
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            // TODO: Add your update logic here
 
             base.Update(gameTime);
             Input.Update();
@@ -92,33 +100,10 @@ namespace Desktop
             int newHeight = (int)(newWidth / targetAspectRatio);
 
             // Применяем новые размеры
-            _graphics.PreferredBackBufferWidth = newWidth;
-            _graphics.PreferredBackBufferHeight = newHeight;
-            _graphics.ApplyChanges();
+            Graphics.PreferredBackBufferWidth = newWidth;
+            Graphics.PreferredBackBufferHeight = newHeight;
+            Graphics.ApplyChanges();
         }
-
-        //private void OnWindowResized(object sender, EventArgs e)
-        //{
-        //    if (_isResizing) return;
-        //    _isResizing = true;
-
-        //    // Текущие размеры окна
-        //    int newWidth = Window.ClientBounds.Width;
-        //    int newHeight = Window.ClientBounds.Height;
-
-        //    // Вычисляем целевую высоту на основе ширины
-        //    int targetHeight = (int)(newWidth / _targetAspectRatio);
-
-        //    // Если текущая высота не совпадает с целевой — корректируем
-        //    if (newHeight != targetHeight)
-        //    {
-        //        _graphics.PreferredBackBufferWidth = newWidth;
-        //        _graphics.PreferredBackBufferHeight = targetHeight;
-        //        _graphics.ApplyChanges();
-        //    }
-
-        //    _isResizing = false;
-        //}
 
         protected override void Draw(GameTime gameTime)
         {

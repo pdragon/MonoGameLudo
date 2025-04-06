@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoLudo.Core;
+using MonoLudo.Shared.Scenes;
 using MonoLudo.Shared.Scenes.Game;
 using System;
 using System.Collections.Generic;
@@ -20,9 +21,10 @@ namespace MonoLudo.Shared
         public static Texture2D PixelTexture { get; private set; }
         private Board GameBoard = new Board();
         private GraphicsDevice GraphicsDevice;
-        public GameWindow Window { get; private set; }
+        public static GameWindow Window { get; private set; }
         public GraphicsDeviceManager Graphics { get; private set; }
         private bool _matrixNeedsUpdate = true;
+        private MainGameScene MainGameScene = new MainGameScene();
 
 
         private Vector2 _virtualResolution = new Vector2(1920, 1080); // Базовое разрешение
@@ -30,6 +32,10 @@ namespace MonoLudo.Shared
         private Viewport _viewport; // Активная область отрисовки
         private bool _needsMatrixUpdate = true;
 
+        public static void SetSpriteBatch(SpriteBatch spriteBatch)
+        {
+            SpriteBatch = spriteBatch;
+        }
 
         public enum GameStage : short
         {
@@ -39,14 +45,20 @@ namespace MonoLudo.Shared
         }
         private static GameStage Stage = GameStage.MainLoop;
         public Main(GameWindow window, GraphicsDevice graphics, GraphicsDeviceManager gdm, ContentManager content)
+        //public Main()
         {
+            Console.WriteLine("Shared.Main constructor started"); // Лог в консоль
             Content = content;
-            //UpdateScaleMatrix();
             Window = window;
-            Window.ClientSizeChanged += (s, e) => _needsMatrixUpdate = true;
             GraphicsDevice = graphics;
-            //gdm.DeviceCreated += OnDeviceCreated;
+            //UpdateScaleMatrix();
             Window.ClientSizeChanged += OnWindowSizeChanged;
+            //Window.ClientSizeChanged += (s, e) => _needsMatrixUpdate = true;
+
+
+            //gdm.DeviceCreated += OnDeviceCreated;
+
+            Console.WriteLine("Shared.Main constructor finished");
         }
 
         public void LoadContent(GraphicsDevice graphicsDevice, ContentManager content)
@@ -69,8 +81,40 @@ namespace MonoLudo.Shared
 
         public void Update(GameTime gameTime)
         {
-            // TODO: Add your update logic here
-            
+            switch (Stage)
+            {
+                // TODO: Add your update logic here
+                case GameStage.MainMenu:
+                //MainMenuScene.Draw();
+                //if (!mainMenuScene.Update())
+                //{
+                //    Stage = GameStage.MainLoop;
+                //    mainGameScene = new MainGameScene();
+                //}
+                break;
+            case GameStage.MainLoop:
+                if (MainGameScene == null)
+                {
+                    throw new Exception("Main menu skipped");
+                }
+                if (MainGameScene != null && MainGameScene.Update())
+                {
+                    Stage = GameStage.GameOver;
+                    //gameOverScene = new GameOverScene();
+
+                }
+                //Graphics.DrawText(Game.MainText, 50, (int)GameConfig.ScreenHeight - 30, 20, Color.Beige);
+                break;
+            case GameStage.GameOver:
+                //Graphics.ClearBackground(new Color(40, 45, 52, 255));
+                //if (!gameOverScene?.Update() ?? false)
+                //{
+                //    Stage = GameStage.MainMenu;
+                //}
+
+                break;
+            }
+
         }
 
         public void Draw(GraphicsDevice graphicsDevice, GameTime gameTime, GameWindow window)
@@ -86,13 +130,28 @@ namespace MonoLudo.Shared
                     new Rectangle(0, 0, window.ClientBounds.Width, window.ClientBounds.Height), // Растянуть на весь экран
                     Color.White
                 );
-                
+                if (Stage == GameStage.MainLoop)
+                {
+                    Dice.OnScreenDraw();
+                }
                 SpriteBatch.End();
                 SpriteBatch.Begin(transformMatrix: ScaleMatrix);
-                GameBoard.Draw();
+                switch (Stage)
+                {
+                    // TODO: Add your update logic here
+                    case GameStage.MainMenu:
 
-                //Vector2 debugPos = GetVirtualMousePosition();
-                //SpriteBatch.DrawString(_font, $"X: {debugPos.X}, Y: {debugPos.Y}", Vector2.Zero, Color.White);
+                        break;
+                    case GameStage.MainLoop:
+                        MainGameScene.Draw();
+                        
+                        break;
+                    case GameStage.GameOver:
+
+
+                        break;
+                }
+
                 SpriteBatch.End();
             }
         }
@@ -102,57 +161,6 @@ namespace MonoLudo.Shared
 
         //private void OnDeviceCreated(object sender, EventArgs e) => UpdateScaleMatrix();
         private void OnWindowSizeChanged(object sender, EventArgs e) => UpdateScaleMatrix();
-
-        //public void UpdateScaleMatrix()
-        //{
-        //    var screenWidth = Window.ClientBounds.Width;
-        //    var screenHeight = Window.ClientBounds.Height;
-
-        //    // Рассчитайте соотношение сторон
-        //    var scaleX = screenWidth / _virtualResolution.X;
-        //    var scaleY = screenHeight / _virtualResolution.Y;
-        //    var scale = Math.Min(scaleX, scaleY); // Сохраняем пропорции
-
-        //    // Центрируем доску
-        //    var offsetX = (screenWidth - _virtualResolution.X * scale) / 2;
-        //    var offsetY = (screenHeight - _virtualResolution.Y * scale) / 2;
-
-        //    // Создаём матрицу преобразования
-        //    ScaleMatrix = Matrix.CreateScale(scale, scale, 1) *
-        //                   Matrix.CreateTranslation(offsetX, offsetY, 0);
-
-        //    // Обновляем вьюпорт для камеры
-        //    _viewport = new Viewport(
-        //        (int)offsetX,
-        //        (int)offsetY,
-        //        (int)(_virtualResolution.X * scale),
-        //        (int)(_virtualResolution.Y * scale)
-        //    );
-        //    GraphicsDevice.Viewport = _viewport;
-        //}
-        //public void UpdateScaleMatrix()
-        //{
-        //    var screenWidth = Window.ClientBounds.Width;
-        //    var screenHeight = Window.ClientBounds.Height;
-
-        //    //float scale = Math.Min(
-        //    //    screenWidth / _virtualResolution.X,
-        //    //    screenHeight / _virtualResolution.Y
-        //    //);
-
-        //    //ScaleMatrix = Matrix.CreateScale(scale, scale, 1f) *
-        //    //               Matrix.CreateTranslation(
-        //    //                   (screenWidth - _virtualResolution.X * scale) / 2,
-        //    //                   (screenHeight - _virtualResolution.Y * scale) / 2,
-        //    //                   0);
-
-        //    // Рассчитываем масштаб без сохранения пропорций
-        //    float scaleX = screenWidth / _virtualResolution.X;
-        //    float scaleY = screenHeight / _virtualResolution.Y;
-
-        //    ScaleMatrix = Matrix.CreateScale(scaleX, scaleY, 1f);
-        //    _matrixNeedsUpdate = false;
-        //}
 
         public void UpdateScaleMatrix()
         {
@@ -174,7 +182,7 @@ namespace MonoLudo.Shared
             Content.Load<SpriteFont>("Fonts/Shafarik-Regular"), // Путь без .spritefont
             text,
             position,
-            Board.Fade(color, 5)
+            Board.Fade(color, 1)
         );
         }
     }

@@ -2,6 +2,9 @@
 //using System.Numerics;
 using MonoLudo.Core;
 using Microsoft.Xna.Framework;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Xna.Framework.Graphics;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace MonoLudo.Shared.Scenes.Game;
 
@@ -49,78 +52,42 @@ public class Dice
 
     public void Draw()
     {
-   //     // Анимация вращения
-   //     if (IsRolling)
-   //     {
-   //         //RollTime -= Raylib.GetFrameTime();
-   //         RollTime -= Config.DeltaTime;//Time.GetFrameTime();
+        // Анимация вращения
+        if (IsRolling)
+        {
+            RollTime -= Config.DeltaTime;//Time.GetFrameTime();
 
-			//if (RollTime <= 0)
-   //         {
-   //             IsRolling = false;
-   //         }
+            if (RollTime <= 0)
+            {
+                IsRolling = false;
+            }
 
-   //         // Мигание во время броска
-   //         if ((int)(RollTime * 10) % 2 == 0)
-   //         {
-   //             //Image.DrawRectangleRec(Bounds, ColorIndex.Maroon);
-   //             return;
-   //         }
-   //     }
+            // Мигание во время броска
+            if ((int)(RollTime * 10) % 2 == 0)
+            {
+                //Image.DrawRectangleRec(Bounds, ColorIndex.Maroon);
+                return;
+            }
+        }
+    }
+    public static void OnScreenDraw()
+    {
+        //TODO: сделать спрайтом потом
+        
 
-   //     // Отрисовка кубика
-   //     Graphics.DrawRectangleRounded(Bounds, 0.2f, 6, Color.Gray);
+        string text = Value.ToString();
+        //Vector2 textSize = _font.MeasureString(text); // Размер текста в пикселях
+        Vector2 textSize = new Vector2(20,30);
+        float padding = 20; // Отступ от краёв
 
-   //     // Точки на кубике
-   //     const float dotSize = 8.0f;
-   //     Color dotColor = Color.Black;
-   //     Vector2 Center = new Vector2(
-   //     Bounds.X + Bounds.Width / 2, Bounds.Y + Bounds.Height / 2);
+        // Позиция в правом нижнем углу с учётом размера текста
+        Vector2 position = new Vector2(
+            Main.Window.ClientBounds.Width - textSize.X - padding, // X
+        Main.Window.ClientBounds.Height - textSize.Y - padding  // Y
+        );
 
-   //     switch (Value)
-   //     {
-   //         case 1:
-   //             Graphics.DrawCircleV(Center, dotSize, dotColor);
-   //             break;
-
-   //         case 2:
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y - 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y + 15), dotSize, dotColor);
-   //             break;
-
-   //         case 3:
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y - 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(Center, dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y + 15), dotSize, dotColor);
-   //             break;
-
-   //         case 4:
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y - 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y - 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y + 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y + 15), dotSize, dotColor);
-   //             break;
-
-   //         case 5:
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y - 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y - 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(Center, dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y + 15), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y + 15), dotSize, dotColor);
-   //             break;
-
-   //         case 6:
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y - 25), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X - 15, Center.Y + 25), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y - 25), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y), dotSize, dotColor);
-   //             Graphics.DrawCircleV(new Vector2(Center.X + 15, Center.Y + 25), dotSize, dotColor);
-   //             break;
-   //         default:
-   //             //Raylib.DrawText("a",1,1, 8, new Color());
-   //             Console.WriteLine("Ошибка значения кубика!");
-   //             break;
-   //     }
+        //_spriteBatch.DrawString(_font, text, position, Color.Aqua);
+        //Main.Text(Value.ToString(), new Vector2(Main.Window.ClientBounds.X - 200, Main.Window.ClientBounds.Y - 200), Color.Aqua);
+        Main.Text(Value.ToString(), position, Color.Aqua);
     }
 }

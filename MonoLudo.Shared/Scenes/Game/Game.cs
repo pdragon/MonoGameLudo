@@ -64,8 +64,8 @@ public class Game
     {
         for (var color = (int)Config.ColorIndex.Red; color <= ((int)Config.ColorIndex.Yellow); color++)
         {
-            var playerPicked = Main.PlayersAvailable.Any(p => (short)p == (short)color);
-            if (playerPicked)
+            bool playerPicked = Main.PlayersAvailable.Any(p => (short)p == (short)color);
+            if (!playerPicked)
             {
                 Players![(int)color] = new Player((Config.ColorIndex)color, Board.PlayerStaringPosition[(Config.ColorIndex)color]);
             }
@@ -144,7 +144,7 @@ public class Game
             CurrentPlayerIndex = (short)((CurrentPlayerIndex + 1) % Config.MaxPlayers);
     }
 
-    public void Draw()
+    public void Update()
     {
         while (Players![CurrentPlayerIndex] == null)
         {
