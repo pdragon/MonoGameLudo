@@ -34,18 +34,18 @@ public static class Config
         {
             return new Dictionary<ColorIndex, short>()
             {
-                { ColorIndex.Red, 4 },
                 { ColorIndex.Blue, 17 },
-                { ColorIndex.Yellow, 30 },
-                { ColorIndex.Green, 43 }
+                { ColorIndex.Red, 4 },
+                { ColorIndex.Green, 43 },
+                { ColorIndex.Yellow, 30 }
             };
         }
     }// = new Dictionary<ColorIndex, short>();
     
     public enum ColorIndex : int
     {
-        Red = 0,
-        Blue = 1,
+        Blue = 0,
+        Red = 1,
         Green = 2,
         Yellow = 3,
         Neutral = 4
@@ -55,22 +55,21 @@ public static class Config
     {
         get
         {
-            
             return new Dictionary<ColorIndex, short>()
             {
-                { ColorIndex.Red, 2 },
                 { ColorIndex.Blue, 15 },
-                { ColorIndex.Yellow, 28 },
-                { ColorIndex.Green, 41 }
+                { ColorIndex.Red, 2 },
+                { ColorIndex.Green, 41 },
+                { ColorIndex.Yellow, 28 }
             };
         }
     }
 
     public static readonly Color[] PlayerColors =
     {
+        Color.CornflowerBlue, //new(50, 120, 230, 255), // Blue
         Color.Red, //new(230, 50, 50, 255),    // Red
-        Color.Blue, //new(50, 120, 230, 255),   // Blue
-        Color.Green, //new(50, 230, 120, 255),   // Green
+        Color.LightGreen, //new(50, 230, 120, 255),   // Green
         Color.Yellow //new(230, 230, 50, 255)    // Yellow
     };
 

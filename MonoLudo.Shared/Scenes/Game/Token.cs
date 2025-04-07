@@ -81,29 +81,35 @@ public class Token
     {
         float scale = Main.ScaleMatrix.M11; // Масштаб по оси X (предполагается равный Y)
         float scaledRadius = Config.TokenRadius * scale;
+        Vector2 positionOnTile = new Vector2(
+            (position.X + Config.CellSize.X / 2) - (Config.CircleTexture[(short)PlayerColor].Width / 2) + 10,
+            (position.Y + Config.CellSize.Y / 2) - (Config.CircleTexture[(short)PlayerColor].Height / 2) + 10
+        );
 
         // Внешний круг (чёрная обводка)
         Main.SpriteBatch.Draw(
-            Config.CircleTexture[0],
-            position,
+            Config.CircleTexture[(short)PlayerColor],
+            //new Vector2(position.X + Config.CellSize.X / 2, position.Y + Config.CellSize.Y / 2),
+            positionOnTile,
             null, // Не используйте Rectangle, если нужен масштаб!
             Color.Black,
             0f,
             Vector2.Zero,
-            (scaledRadius + 2 + radiusCorrection) / Config.CircleTexture[0].Width, // Масштаб
+            (scaledRadius + 2 + radiusCorrection) / Config.CircleTexture[(short)PlayerColor].Width, // Масштаб
             SpriteEffects.None,
             0f
         );
 
         // Внутренний круг (цвет игрока)
         Main.SpriteBatch.Draw(
-            Config.CircleTexture[0],
-            position,
+            Config.CircleTexture[(short)PlayerColor],
+            //new Vector2(position.X + Config.CellSize.X / 2, position.Y + Config.CellSize.Y / 2),
+            positionOnTile,
             null,
             Config.PlayerColors[(short)PlayerColor],
             0f,
             Vector2.Zero,
-            (scaledRadius + radiusCorrection) / Config.CircleTexture[0].Width,
+            (scaledRadius + radiusCorrection) / Config.CircleTexture[(short)PlayerColor].Width,
             SpriteEffects.None,
             0f
         );

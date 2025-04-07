@@ -62,7 +62,7 @@ public class Game
 
     private void InitializePlayers()
     {
-        for (var color = (int)Config.ColorIndex.Red; color <= ((int)Config.ColorIndex.Yellow); color++)
+        for (var color = (int)Config.ColorIndex.Blue; color <= ((int)Config.ColorIndex.Yellow); color++)
         {
             bool playerPicked = Main.PlayersAvailable.Any(p => (short)p == (short)color);
             if (!playerPicked)
