@@ -25,7 +25,7 @@ namespace MonoLudo.Shared.Scenes
 
         public void Draw() {
             //Board.Draw();
-            //Board.DebugTiles();
+            Board.DebugTiles();
             Scenes.Game.Game.Dice.Draw();
             foreach (var player in Game.Game.Players!)
             {
