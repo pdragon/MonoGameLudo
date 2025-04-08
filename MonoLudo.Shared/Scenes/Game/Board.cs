@@ -57,10 +57,10 @@ public class Board
     Texture2D Background;
     public static Dictionary<Config.ColorIndex, Vector2> PlayerStaringPosition = new(){
         //{ Config.ColorIndex.Blue, new Vector2(920, 920)},
-        { Config.ColorIndex.Blue, new Vector2(1520, 850)},
-        { Config.ColorIndex.Red, new Vector2(1520, 205)},
-        { Config.ColorIndex.Green, new Vector2(370, 205)},
-        { Config.ColorIndex.Yellow, new Vector2(370, 850)}
+        { Config.ColorIndex.Blue, new Vector2(1460, 825)},
+        { Config.ColorIndex.Red, new Vector2(1460, 180)},
+        { Config.ColorIndex.Green, new Vector2(310, 180)},
+        { Config.ColorIndex.Yellow, new Vector2(310, 825)}
     };
 
 
