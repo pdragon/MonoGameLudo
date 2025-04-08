@@ -40,7 +40,7 @@ namespace MonoLudo.Shared.Scenes
         public bool Update()
         {
             bool gameOver = Game.Game.Players!.All(s => s == null || s.CurrentState == Player.State.AlreadyVictory);
-            //InputHandler.ProcessInput(Game);
+            //InputHandler.ProcessInput(Game.Game);
 
             //Board.Draw();
             //Game.Game.Dice.Draw();

@@ -1,2 +1,2 @@
-﻿using var game = new Desktop.Main();
+﻿using var game = new MonoLudo.Desktop.Main();
 game.Run();

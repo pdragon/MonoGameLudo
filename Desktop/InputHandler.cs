@@ -11,13 +11,16 @@ namespace MonoLudo.Desktop;
 
 public static class InputHandler
 {
-    public static void ProcessInput(MonoLudo.Shared.Scenes.Game.Game game)
+    /*
+    //public static void ProcessInput(MonoLudo.Shared.Scenes.Game.Game game)
+    public static void ProcessInput()
     {
         // Обработка клика по кубику
         if (Input.IsLeftButtonReleased())
         {
             Point mousePos = Input.GetMousePosition();
             Rectangle diceBounds = Config.GetDiceBounds();
+            Console.WriteLine(mousePos);
             // Бросаем кубик
             //if (ShapeHelper.CheckCollisionPointRec(mousePos, diceBounds))
             //{
@@ -103,4 +106,5 @@ public static class InputHandler
             Matrix.Invert(scaleMatrix)
         );
     }
+    */
 }

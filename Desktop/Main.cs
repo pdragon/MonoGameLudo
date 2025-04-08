@@ -7,7 +7,7 @@ using static MonoLudo.Core.Config;
 using System;
 using Microsoft.Xna.Framework.Content;
 
-namespace Desktop
+namespace MonoLudo.Desktop
 {
     public class Main : Game
     {
@@ -109,9 +109,15 @@ namespace Desktop
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             SharedMain.Draw(GraphicsDevice, gameTime, Window);
+
+
+            Debug.MousePos();
             // TODO: Add your drawing code here
 
             base.Draw(gameTime);
+            
         }
+
+
     }
 }

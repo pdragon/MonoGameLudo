@@ -48,7 +48,7 @@ namespace MonoLudo.Shared.Actions
         public void Update()
         {
 
-            Tile tile = InputHandler.PlayerMoveHandler(NeedSelectTo);
+            Tile tile = Input.PlayerMoveHandler(NeedSelectTo);
             if (tile != null)
             {
                 Token token = tile.GetFirstTokenOnTile(CurrentPlayer);
@@ -88,7 +88,7 @@ namespace MonoLudo.Shared.Actions
                     }
                 }
             }
-            if (Dice.GetValue() == 6 && InputHandler.PlayerClickBaseTokensHandler(CurrentPlayer))
+            if (Dice.GetValue() == 6 && Input.PlayerClickBaseTokensHandler(CurrentPlayer))
             {
                 var token = CurrentPlayer.Tokens.Where(a => a.IsInBase).FirstOrDefault();
                 if (token != null)
